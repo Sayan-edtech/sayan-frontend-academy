@@ -18,12 +18,12 @@ function RemoteImage({
   ...rest
 }: RemoteImageProps) {
   // Don't render if src is empty or invalid
-  if (!src || typeof src !== 'string' || src.trim() === '') {
+  if (!src || typeof src !== "string" || src.trim() === "") {
     return null;
   }
 
   const url = import.meta.env.VITE_API_URL;
-  
+
   // Don't render if API URL is not available
   if (!url) {
     return null;
@@ -32,12 +32,12 @@ function RemoteImage({
   try {
     const origin = new URL(url).origin;
     // Handle cases where src already includes the full path
-    const imageSrc = src.startsWith('http') 
-      ? src 
-      : prefix 
-        ? `${origin}/${prefix}/${src}` 
-        : `${origin}/${src}`;
-    
+    const imageSrc = src.startsWith("http")
+      ? src
+      : prefix
+      ? `${origin}/${prefix}/${src}`
+      : `${origin}/${src}`;
+
     return (
       <img
         src={imageSrc}
@@ -47,8 +47,9 @@ function RemoteImage({
         {...rest}
       />
     );
-  } catch (error) {
-    console.warn('Invalid API URL:', url);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error: unknown) {
+    console.warn("Invalid API URL:", url);
     return null;
   }
 }

@@ -1,90 +1,50 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay } from "swiper/modules";
-import "swiper/css";
+import HtmlRenderer from "@/components/shared/HtmlRenderer";
+import RemoteImage from "@/components/shared/RemoteImage";
+import type { About } from "@/types/about";
+import { GraduationCap, Award } from "lucide-react";
 
-const features = [
-  {
-    icon: "/assets/icons/features/ai.svg",
-    title: "الذكاء الاصطناعي",
-    description: "استخدم أحدث تقنيات الذكاء الاصطناعي لتحسين تجربة التعلم",
-  },
-  {
-    icon: "/assets/icons/features/analytics.svg",
-    title: "تحليلات متقدمة",
-    description: "تتبع تقدم الطلاب وتحليل الأداء بشكل تفصيلي",
-  },
-  {
-    icon: "/assets/icons/features/interactive.svg",
-    title: "محتوى تفاعلي",
-    description: "دروس تفاعلية وتمارين عملية لتعزيز التعلم",
-  },
-  {
-    icon: "/assets/icons/features/certificate.svg",
-    title: "شهادة حضور",
-    description: "احصل على شهادة حضور عند إكمال الدورات",
-  },
-];
-
-export default function Features() {
+function Features({ about }: { about: About }) {
   return (
-    <section className="pb-10 bg-card">
+    <section id="features" className="py-16 relative">
       <div className="container">
-        <div className="relative bottom-6 bg-card rounded-3xl p-8 lg:p-12 shadow-[0_0_20px_#0000000d]">
-          <div className="flex items-center flex-wrap gap-4">
-            <h2 className="text-xl lg:text-2xl max-w-64 font-bold text-foreground text-center">
-              هنا تبدأ رحلتك من العلم الى العمل
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          {/* Image Section - Left */}
+          <div className="order-last md:order-none">
+            <RemoteImage
+              src={about.image}
+              alt={about.title}
+              className="w-full h-auto rounded-lg"
+              loading="lazy"
+              width="600"
+            />
+          </div>
+          {/* Text Content - Right */}
+          <div className="text-right">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-6">
+              <HtmlRenderer html={about.title} />
             </h2>
 
-            <Slider />
+            <p className="text-base lg:text-lg text-muted-foreground leading-relaxed mb-8">
+              <HtmlRenderer html={about.content} />
+            </p>
+            <ul className="flex items-center gap-6">
+              <li className="flex items-center justify-end gap-3 text-foreground">
+                <GraduationCap className="w-6 h-6 text-primary" />
+                <span className="text-base font-semibold">
+                  {about.feature_one}
+                </span>
+              </li>
+              <li className="flex items-center justify-end gap-3 text-foreground">
+                <Award className="w-6 h-6 text-primary" />
+                <span className="text-base font-semibold">
+                  {about.feature_two}
+                </span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
   );
 }
-
-function Slider() {
-  return (
-    <Swiper
-      modules={[Pagination, Autoplay]}
-      spaceBetween={24}
-      slidesPerView={1}
-      autoplay={{
-        delay: 3000,
-        disableOnInteraction: false,
-      }}
-      breakpoints={{
-        640: {
-          slidesPerView: 1,
-        },
-        1024: {
-          slidesPerView: 3,
-        },
-      }}
-      className="!flex-1"
-    >
-      {features.map((feature, index) => (
-        <SwiperSlide key={index}>
-          <div className="bg-accent lg:bg-transparent hover:bg-accent transition-colors duration-200 rounded-2xl p-6 h-full">
-            <div className="flex flex-col gap-4">
-              <div className="w-12 h-12 border border-[#00000008] bg-[#F9F9FF] rounded-[20px] flex items-center justify-center">
-                <img
-                  src={feature.icon}
-                  alt={feature.title}
-                  loading="lazy"
-                  className="w-6 h-6"
-                />
-              </div>
-              <h3 className="text-xl text-card-foreground font-semibold">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-muted-foreground truncate">
-                {feature.description}
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  );
-}
+export default Features;

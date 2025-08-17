@@ -10,10 +10,3 @@ export function getAcademyPath({ academySlug }: { academySlug?: string }) {
   const academyPath = hasSubdomain() ? subdomain : `/academy/${academySlug}`;
   return academyPath;
 }
-
-export function redirectPath(path: string) {
-  const academySlug = window.location.pathname.split("/")[2];
-  const academyPath = getAcademyPath({ academySlug });
-  const href = hasSubdomain() ? window.location.href : `${academyPath}/`;
-  return (window.location.href = `${href}${path}`);
-}

@@ -2,6 +2,7 @@ import { Swiper } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+// import CourseCard from "@/components/shared/CourseCard";
 
 export default function RelatedCourses() {
   return (
@@ -14,26 +15,24 @@ export default function RelatedCourses() {
         modules={[Navigation]}
         navigation
         spaceBetween={24}
-        slidesPerView={1}
+        slidesPerView="auto"
         breakpoints={{
           640: {
-            slidesPerView: 2,
+            slidesPerView: "auto",
           },
           1024: {
-            slidesPerView: 3,
+            slidesPerView: "auto",
           },
         }}
         className="!pb-4 !px-1"
       >
-        {/* <ul>
-          {relatedCourses.map((course) => (
+        <ul>
+          {/* {relatedCourses.map((course) => (
             <SwiperSlide key={course.id} className="h-full">
-              <li className="bg-card shadow-md hover:shadow-lg transition-colors duration-200 rounded-[20px] p-4">
-                <CourseCard course={course} />
-              </li>
+              <CourseCard course={course} />
             </SwiperSlide>
-          ))}
-        </ul> */}
+          ))} */}
+        </ul>
       </Swiper>
     </div>
   );

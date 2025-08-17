@@ -1,5 +1,5 @@
-import type { About } from "./academy/about";
-import type { Opinion } from "./academy/opinion";
+import type { About } from "./about";
+import type { Opinion } from "./opinion";
 import type { Course } from "./couse";
 import type { FAQ } from "./faq";
 

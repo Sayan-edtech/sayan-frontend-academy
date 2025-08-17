@@ -1,25 +1,31 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const links = [
   {
     id: crypto.randomUUID(),
     title: "الرئيسية",
-    href: "/",
+    href: "#home",
   },
   {
     id: crypto.randomUUID(),
-    title: "اطلق اكادميتك",
-    href: "/launch-academy",
+    title: "الانجازات",
+    href: "#features",
   },
   {
     id: crypto.randomUUID(),
-    title: "الذكاء الاصطناعي",
-    href: "/ai",
+    title: "المواد التعليمية",
+    href: "#courses",
   },
   {
     id: crypto.randomUUID(),
-    title: "تدريب وتطوير الموظفين",
-    href: "/employee-training",
+    title: "أراء الطلاب",
+    href: "#testimonials",
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "الأسئلة الشائعة",
+    href: "#faq",
   },
 ];
 
@@ -31,16 +37,16 @@ export default function Navbar() {
       <ul className="flex items-center gap-4">
         {links.map((link) => (
           <li key={link.id}>
-            <Link
-              to={link.href}
+            <a
+              href={link.href}
               className={`${
-                location.pathname === link.href
+                location.hash === link.href
                   ? "text-primary"
                   : "accent-foreground"
-              } hover:text-primary duration-200 transition-colors`}
+              } hover:text-primary duration-200 transition-colors cursor-pointer`}
             >
               {link.title}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>

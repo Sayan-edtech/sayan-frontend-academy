@@ -3,43 +3,21 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import Home from "@/pages";
-import About from "@/pages/about";
 import NotFound from "@/pages/not-found";
 import CourseDetails from "@/pages/courses/[slug]";
-import LaunchAcademy from "@/pages/launch-academy";
-import EmployeeTraining from "@/pages/employee-training";
-import Ai from "@/pages/ai";
-
-import { dashboardRoutes } from "./DashboardRoutes";
-import { authRoutes } from "./AuthRoutes";
-import { academyRoutes } from "./academy-routes";
-import { hasSubdomain } from "@/lib/subdomain";
+import { academyAuthRoutes } from "./AuthRoutes";
+import Home from "@/pages";
+import Layout from "@/components/shared/Layout";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      {hasSubdomain() ? (
-        // Academy subdomain routes
-        <>
-          {academyRoutes}
-          {dashboardRoutes}
-        </>
-      ) : (
-        // Main application routes
-        <>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="courses/:courseSlug" element={<CourseDetails />} />
-          <Route path="launch-academy" element={<LaunchAcademy />} />
-          <Route path="ai" element={<Ai />} />
-          <Route path="employee-training" element={<EmployeeTraining />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="courses/:courseSlug" element={<CourseDetails />} />
+        {academyAuthRoutes}
+      </Route>
 
-          {dashboardRoutes}
-          {authRoutes}
-          {academyRoutes}
-        </>
-      )}
       <Route path="*" element={<NotFound />} />
     </>
   )

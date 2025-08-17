@@ -34,10 +34,10 @@ export default function MobileMenu({ links }: MobileMenuProps) {
               <X className="w-5 h-5" />
             </SheetClose>
             <img
-              src="/assets/images/logo.svg"
+              src="https://www.sayan-server.com/storage/academy/image/uqeh6BuRGvAmQ8tdvoGa.png"
               alt="Logo"
               loading="eager"
-              className="w-[100px] h-[45px]"
+              className="h-[45px] object-contain"
             />
           </SheetHeader>
           <nav className="mt-8 flex-1">
@@ -61,20 +61,17 @@ export default function MobileMenu({ links }: MobileMenuProps) {
           <div className="py-6 flex flex-col items-stretch gap-4 border-t border-border">
             <Link
               to="/auth/signin"
-              className={buttonVariants({
-                variant: "outline",
-                className: "w-full justify-center",
-              })}
+              className={`${buttonVariants({
+                variant: "secondary",
+              })} !text-lg !font-medium border border-border hover:border-primary hover:text-primary transition-colors`}
             >
               دخول
             </Link>
             <Link
               to="/auth/signup"
-              className={buttonVariants({
-                className: "w-full justify-center",
-              })}
+              className={`${buttonVariants({ size: "lg" })} !font-bold`}
             >
-              انضم الان
+              حساب جديد
             </Link>
           </div>
         </div>

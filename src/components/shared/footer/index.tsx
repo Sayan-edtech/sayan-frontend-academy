@@ -1,65 +1,65 @@
+import { Phone } from "lucide-react";
 import SocialMedia from "./social-media";
 import { Link } from "react-router-dom";
-import { Mail, Phone } from "lucide-react";
+import type { Settings } from "@/types/academy";
+import RemoteImage from "@/components/shared/RemoteImage";
 
-function Footer() {
+function Footer({ settings }: { settings: Settings }) {
   const linkStyles =
-    "text-primary text-base hover:text-[#009AFF] hover:underline duration-200 transition-colors";
+    "text-card-foreground hover:text-[#009AFF] hover:underline duration-200 transition-colors";
   return (
-    <footer className="bg-gradient-to-r from-gray-50 to-gray-100 border-t border-gray-200 pt-10 lg:pt-20 pb-8">
-      <div className="container flex flex-col gap-10">
+    <footer className="bg-[rgb(249_250_251)]">
+      <div className="container flex flex-col gap-10 md:gap-20">
         <div className="flex justify-between flex-wrap gap-10">
           <div className="flex flex-col gap-6">
             <Link to="/">
-              <img
-                src="/assets/images/logo.svg"
-                alt="Logo"
-                loading="lazy"
+              <RemoteImage
+                src={settings.logo}
+                alt={settings.platform_name}
                 className="h-[60px] object-contain"
               />
             </Link>
-            <p className="text-lg text-card-foreground lg:w-[350px]">
-              منصة سيان التعليمية توفر تجربة تعلم فريدة تجمع بين أحدث التقنيات
-              وأفضل الممارسات التعليمية لتقديم محتوى عالي الجودة.
-            </p>
+            <span className="text-lg text-card-foreground">
+              {settings.platform_name}
+            </span>
           </div>
-          <div>
-            <SocialMedia />
-            <div className="mt-8">
-              <h3 className="text-foreground font-medium text-lg md:text-xl mb-4">
-                للتواصل معنا
-              </h3>
-              <div className="flex flex-col gap-4">
-                {/* Email */}
-                <div className="flex items-center gap-3">
-                  <a
-                    href="mailto:support@sayan.pro"
-                    className="flex items-center gap-3 text-primary hover:text-primary/80 transition-colors duration-200"
-                  >
-                    <Mail className="w-5 h-5" />
-                    <span className="text-lg">support@sayan.pro</span>
-                  </a>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4">
+              <h3 className="text-foreground text-lg lg:text-xl">تواصل معنا</h3>
+              <div className="flex items-center group duration-200 transition-colors">
+                <div className="bg-[#1E02AA] group-hover:bg-[#009AFF] rounded-[8px] w-10  h-10 element-center">
+                  <Phone className="rotate-270 text-white" />
                 </div>
-
-                {/* Phone */}
-                <div className="flex items-center gap-3">
-                  <a
-                    href="tel:0590406718"
-                    className="flex items-center gap-3 text-primary hover:text-primary/80 transition-colors duration-200"
-                  >
-                    <Phone className="w-5 h-5" />
-                    <span className="text-lg">0590406718</span>
-                  </a>
-                </div>
+                <a
+                  href={`tel:${settings.phone}`}
+                  className="text-card-foreground group-hover:text-[#009AFF] pr-4"
+                >
+                  {settings.phone}
+                </a>
               </div>
             </div>
+            <SocialMedia
+              links={{
+                facebook: settings.facebook,
+                twitter: settings.twitter,
+                instagram: settings.instagram,
+                youtube: settings.youtube,
+                linkedin: settings.linkedin,
+              }}
+            />
           </div>
         </div>
-        <div className="border-t border-border pt-6 text-card-foreground lg:text-lg text-center flex flex-col gap-4 justify-center">
-          <p className="text-card-foreground">
-            جميع الحقوق محفوظة لمنصة سيان © 2025
+        <div className="border-t border-border py-6 text-card-foreground text-sm lg:text-base text-center flex flex-wrap gap-4 justify-between">
+          <p>
+            جميع الحقوق محفوظة © 2025 تم التطوير بواسطة{" "}
+            <Link
+              to="/"
+              className="text-primary hover:text-[#009AFF] duration-200 transition-colors hover:underline"
+            >
+              منصة سيان
+            </Link>
           </p>
-          <div className="flex gap-2 md:gap-4 flex-wrap justify-center">
+          <div className="flex gap-4 flex-wrap justify-center md:justify-start">
             <Link to="/terms" target="_blank" className={linkStyles}>
               الشروط والأحكام
             </Link>

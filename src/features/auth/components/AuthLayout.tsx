@@ -1,41 +1,47 @@
-import { PublicRoute } from "@/components/shared/GuardRoute";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useParams, Navigate } from "react-router-dom";
+import { useAcademy } from "../../home/hooks/useAcademyQueries";
+import { Routes } from "@/constants/enums";
+import RemoteImage from "@/components/shared/RemoteImage";
 
 function AuthLayout() {
+  const { academySlug } = useParams();
+  const subdomain = window.location.hostname.split(".")[0];
+  const { data: academyInfo, isPending } = useAcademy({
+    slug: academySlug,
+    subdomain: subdomain,
+  });
+  if (!isPending && !academyInfo) {
+    return <Navigate to={Routes.ROOT} state={{ from: location }} replace />;
+  }
   return (
-    <PublicRoute>
-      <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-        <div className="hidden lg:block relative">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-bl-[200px]"
-            style={{
-              backgroundImage: "url('/assets/images/auth/auth.png')",
-            }}
-          />
-          <div className="absolute inset-0 rounded-bl-[200px] bg-black/30">
+    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+      <div className="hidden lg:block relative">
+        <div className="absolute inset-0 rounded-bl-[200px] bg-primary">
+          {academyInfo?.data.settings.logo && (
             <div className="absolute left-20 top-10 z-10">
-              <img
-                src="/assets/images/footer-logo.svg"
+              <RemoteImage
+                src={academyInfo?.data.settings.logo}
                 alt="Sayan Logo"
                 loading="eager"
-                className="w-32 h-[75px]"
+                className="h-32 w-32 object-cover"
               />
             </div>
-            <div className="absolute right-10 bottom-10 z-10">
-              <Navbar />
-            </div>
+          )}
+
+          <div className="absolute right-10 bottom-10 z-10">
+            <Navbar />
           </div>
         </div>
-        {/* Left Side - Content Area */}
-        <div className="flex-1 flex flex-col py-10">
-          <div className="flex-1 flex items-center justify-center px-8">
-            <div className="w-full max-w-md">
-              <Outlet />
-            </div>
+      </div>
+      {/* Left Side - Content Area */}
+      <div className="flex-1 flex flex-col py-10">
+        <div className="flex-1 flex items-center justify-center px-8">
+          <div className="w-full max-w-md">
+            <Outlet />
           </div>
         </div>
-      </main>
-    </PublicRoute>
+      </div>
+    </main>
   );
 }
 

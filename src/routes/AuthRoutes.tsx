@@ -1,13 +1,13 @@
-import AuthLayout from "@/features/auth/components/AuthLayout";
+import SigninWithGoogle from "@/pages/sigin-with-google";
 import ForgotPassword from "@/pages/auth/forgot-password";
 import ResetPassword from "@/pages/auth/reset-password";
 import Signin from "@/pages/auth/signin";
 import Signup from "@/pages/auth/signup";
 import VerifyAccount from "@/pages/auth/verify-account";
-import SigninWithGoogle from "@/pages/sigin-with-google";
 import { Route } from "react-router-dom";
+import AuthLayout from "@/features/auth/components/AuthLayout";
 
-export const authRoutes = (
+export const academyAuthRoutes = (
   <Route path="auth" element={<AuthLayout />}>
     <Route path="sigin-with-google" element={<SigninWithGoogle />} />
     <Route path="signin" element={<Signin />} />

@@ -2,14 +2,14 @@ import Navbar, { links } from "./navbar";
 import AuthLinks from "./auth-links";
 import MobileMenu from "./mobile-menu";
 import { Link } from "react-router-dom";
-import ShoppingCart from "./shopping-cart";
+import type { Settings } from "@/types/academy";
+import RemoteImage from "@/components/shared/RemoteImage";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCurrentUserProfile } from "@/features/dashboard/profile/hooks";
-import { UserMenu } from "../dashboard";
+import { useCurrentUserProfile } from "@/hooks/useUserQueries";
+import { UserMenu } from "../UserMenu";
 
-export default function Header() {
+export default function Header({ settings }: { settings: Settings }) {
   const { data: user, isPending } = useCurrentUserProfile();
-
   return (
     <header className="py-8 fixed left-0 w-full top-0 z-50">
       <div className="container">
@@ -22,26 +22,23 @@ export default function Header() {
         >
           <div className="flex items-center flex-1 justify-between lg:justify-start gap-4 lg:gap-10">
             <Link to="/">
-              <img
-                src="/assets/images/logo.svg"
+              <RemoteImage
+                src={settings.logo}
                 alt="Logo"
                 loading="eager"
-                className="w-[100px] h-[45px] object-contain"
+                className="h-[45px] object-contain"
               />
             </Link>
             <MobileMenu links={links} />
             <Navbar />
           </div>
-          <div className="flex items-center gap-4 lg:gap-6">
-            <ShoppingCart />
-            {isPending ? (
-              <Skeleton className="h-10 w-10 rounded-full" />
-            ) : user ? (
-              <UserMenu />
-            ) : (
-              <AuthLinks />
-            )}
-          </div>
+          {isPending ? (
+            <Skeleton className="h-10 w-10 rounded-full" />
+          ) : user ? (
+            <UserMenu />
+          ) : (
+            <AuthLinks />
+          )}
         </div>
       </div>
     </header>
