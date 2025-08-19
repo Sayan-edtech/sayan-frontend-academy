@@ -5,15 +5,24 @@ import { useAcademy } from "@/features/home/hooks/useAcademyQueries";
 import type { AcademyResponse } from "@/types/academy";
 import { Helmet } from "react-helmet-async";
 import { Navigate, Outlet } from "react-router-dom";
+import { Loader } from "./Loader";
 
 export interface OutletContext {
-  academyInfo: AcademyResponse;
+  academyInfo: AcademyResponse["data"];
 }
 function Layout() {
   const subdomain = window.location.hostname.split(".")[0];
   const { data: academyInfo, isPending } = useAcademy({
     subdomain: subdomain,
   });
+
+  if (isPending) {
+    return (
+      <div className="element-center min-h-screen">
+        <Loader />
+      </div>
+    );
+  }
 
   if (!isPending && !academyInfo) {
     return <Navigate to={Routes.ROOT} state={{ from: location }} replace />;

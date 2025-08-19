@@ -22,6 +22,7 @@ const sectionVariants = {
 
 function Home() {
   const { academyInfo } = useOutletContext<OutletContext>();
+
   return (
     <main className="bg-[rgb(249_250_251)]">
       <motion.div
@@ -30,7 +31,7 @@ function Home() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
       >
-        <Hero hero={academyInfo?.data.hero} />
+        <Hero hero={academyInfo.hero} />
       </motion.div>
       <motion.div
         variants={sectionVariants}
@@ -38,9 +39,9 @@ function Home() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
       >
-        <Features about={academyInfo.data.about} />
+        <Features about={academyInfo.about} />
       </motion.div>
-      {academyInfo.data.courses.length > 0 && (
+      {academyInfo.courses.length > 0 && (
         <motion.div
           variants={sectionVariants}
           initial="hidden"
@@ -50,24 +51,24 @@ function Home() {
           <Courses />
         </motion.div>
       )}
-      {academyInfo.data.faqs.length > 0 && (
+      {academyInfo.opinions?.length > 0 && (
         <motion.div
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <Testimonials opinions={academyInfo.data.opinions} />
+          <Testimonials opinions={academyInfo.opinions} />
         </motion.div>
       )}
-      {academyInfo.data.faqs.length > 0 && (
+      {academyInfo.faqs?.length > 0 && (
         <motion.div
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <FAQs faqs={academyInfo.data.faqs} />
+          <FAQs faqs={academyInfo.faqs} />
         </motion.div>
       )}
     </main>

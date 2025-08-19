@@ -8,10 +8,12 @@ import { authCookies } from "@/lib/cookies";
 
 // Create axios instance
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "https://fast.sayan-server.com/api/v1",
+  baseURL:
+    import.meta.env.VITE_API_URL || "https://fast.sayan-server.com/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, // Enable cookies for cross-origin requests
 });
 
 // Request interceptor to add auth token
