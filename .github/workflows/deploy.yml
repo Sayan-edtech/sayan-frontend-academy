@@ -1,0 +1,85 @@
+name: Deploy to cPanel/Hostinger
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: "deploy-${{ github.ref }}"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --production=false
+
+      - name: Lint code
+        run: yarn lint
+        continue-on-error: false
+
+      - name: Run tests (if available)
+        run: |
+          if [ -f "package.json" ] && grep -q '"test"' package.json; then
+            yarn test --passWithNoTests --watchAll=false
+          else
+            echo "No tests found, skipping..."
+          fi
+        continue-on-error: false
+
+      - name: Build with Vite
+        run: yarn build
+        env:
+          NODE_ENV: production
+          CI: true
+
+      - name: Verify build output
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "Error: dist directory not found!"
+            exit 1
+          fi
+          if [ ! -f "dist/index.html" ]; then
+            echo "Error: index.html not found in dist!"
+            exit 1
+          fi
+          echo "Build verification successful"
+          ls -la dist/
+
+      - name: Deploy to cPanel via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          ssh_private_key: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+            QyNTUxOQAAACATft7ZGgeVNG39hHRD5UHE3U+7M0Pj1UupJ5IxKGYdQAAAAKAOgnVeDoJ1
+            XgAAAAtzc2gtZWQyNTUxOQAAACATft7ZGgeVNG39hHRD5UHE3U+7M0Pj1UupJ5IxKGYdQA
+            AAAECz7eo9gUqDBD0jIkPcRG9J/Fcd3Y9DNOntkmUmFZ7lvBN+3tkaB5U0bf2EdEPlQcTd
+            T7szQ+PVS6knkjEoZh1AAAAAHWdpdGh1Yi1hY3Rpb25zQHNheWFuLWZyb250ZW5k
+            -----END OPENSSH PRIVATE KEY-----
+          local_path: "./dist/*"
+          remote_path: ${{ secrets.REMOTE_PATH }}
+          sftpArgs: "-o ConnectTimeout=5"
+
+      - name: Health check (optional)
+        run: |
+          echo "Deployment completed successfully!"
+          # Optional: Add a simple curl check to your domain
+          # curl -f https://yourdomain.com || exit 1
