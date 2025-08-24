@@ -5,11 +5,20 @@ import { Link } from "react-router-dom";
 import type { Settings } from "@/types/academy";
 import RemoteImage from "@/components/shared/RemoteImage";
 import { Skeleton } from "@/components/ui/skeleton";
+<<<<<<< HEAD
 import { useCurrentUserProfile } from "@/hooks/useUserQueries";
 import { UserMenu } from "../UserMenu";
 
 export default function Header({ settings }: { settings: Settings }) {
   const { data: user, isPending } = useCurrentUserProfile();
+=======
+import { UserMenu } from "../dashboard";
+import { useAuth } from "@/features/auth/hooks/useAuthStore";
+
+export default function Header() {
+  const { user, isLoading } = useAuth();
+
+>>>>>>> typescript-front/production
   return (
     <header className="py-8 fixed left-0 w-full top-0 z-50">
       <div className="container">
@@ -32,6 +41,7 @@ export default function Header({ settings }: { settings: Settings }) {
             <MobileMenu links={links} />
             <Navbar />
           </div>
+<<<<<<< HEAD
           {isPending ? (
             <Skeleton className="h-10 w-10 rounded-full" />
           ) : user ? (
@@ -39,6 +49,18 @@ export default function Header({ settings }: { settings: Settings }) {
           ) : (
             <AuthLinks />
           )}
+=======
+          <div className="flex items-center gap-4 lg:gap-6">
+            <ShoppingCart />
+            {isLoading ? (
+              <Skeleton className="h-10 w-10 rounded-full" />
+            ) : user ? (
+              <UserMenu />
+            ) : (
+              <AuthLinks />
+            )}
+          </div>
+>>>>>>> typescript-front/production
         </div>
       </div>
     </header>

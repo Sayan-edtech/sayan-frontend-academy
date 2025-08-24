@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { userService } from "../services/userService";
 import { userKeys } from "@/lib/query-keys";
+import { useAuthStore } from "@/features/auth/store";
 
 // Type for API error response
 interface ApiError {
@@ -15,11 +16,13 @@ interface ApiError {
 
 // Hook for fetching current user profile
 export const useCurrentUserProfile = () => {
+  const { user } = useAuthStore();
   return useQuery({
     queryKey: userKeys.currentUser(),
     queryFn: userService.getCurrentUserProfile,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+    enabled: Boolean(user), // Only run if user is authenticated
     retry: (failureCount, error) => {
       // Don't retry on 401 or 403 errors
       const status = (error as ApiError)?.response?.status;

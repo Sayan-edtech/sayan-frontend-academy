@@ -8,6 +8,7 @@ import type {
 import { authService } from "./services/authService";
 import { authCookies } from "@/lib/cookies";
 import { Routes, UserType } from "@/constants/enums";
+import { userService } from "../dashboard/profile/services";
 
 interface AuthState {
   // State
@@ -18,7 +19,7 @@ interface AuthState {
   isAuthenticated: boolean;
 
   // Actions
-  setUser: (user: User | null) => void;
+  loadUser: () => void;
   setLoading: (loading: boolean) => void;
   login: (credentials: LoginRequest) => Promise<AuthResponse>;
   signup: (userData: SignupRequest) => Promise<AuthResponse>;
@@ -47,14 +48,13 @@ interface AuthState {
 
 // Initialize authentication state from cookies
 const initializeAuthState = () => {
-  const { accessToken, refreshToken, user } = authCookies.getAuthData();
-
+  const user = authCookies.getUser();
   return {
     user,
-    accessToken,
-    refreshToken,
+    accessToken: null,
+    refreshToken: null,
     isLoading: false,
-    isAuthenticated: Boolean(accessToken && refreshToken && user),
+    isAuthenticated: Boolean(user),
   };
 };
 
@@ -62,12 +62,12 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   // Initial state
   ...initializeAuthState(),
   // Actions
-  setUser: (user) =>
+  loadUser: async () => {
+    const user = await userService.getCurrentUserProfile();
     set(() => ({
       user,
-      isAuthenticated: !!user && !!get().accessToken,
-    })),
-
+    }));
+  },
   setLoading: (loading) =>
     set(() => ({
       isLoading: loading,
@@ -86,11 +86,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       }));
 
       // Store in cookies
-      authCookies.setAuthData(
-        data.access_token,
-        data.refresh_token,
-        data.user_data
-      );
+      authCookies.setUser(data.user_data);
       return data;
     } catch (error) {
       set(() => ({ isLoading: false }));
@@ -111,11 +107,8 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       }));
 
       // Store in cookies
-      authCookies.setAuthData(
-        response.access_token,
-        response.refresh_token,
-        response.user_data
-      );
+      authCookies.setUser(response.user_data);
+
       return response;
     } catch (error) {
       set(() => ({ isLoading: false }));
@@ -175,10 +168,9 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     }
 
     try {
-      const response = await authService.refreshToken(refreshToken);
-
+      // const response = await authService.refreshToken(refreshToken);
       // Update tokens in cookies
-      authCookies.setTokens(response.access_token, response.refresh_token);
+      // authCookies.setTokens(response.access_token, response.refresh_token);
     } catch (error) {
       console.error("Failed to refresh tokens:", error);
       // If token refresh fails, clear auth state
@@ -237,11 +229,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
       // Store in cookies
       if (response.data.data) {
-        authCookies.setAuthData(
-          response.data.data?.access_token,
-          response.data.data?.refresh_token,
-          response.data.data?.user_data
-        );
+        authCookies.setUser(response.data.data?.user_data);
       }
 
       return response;
@@ -300,3 +288,5 @@ export const useVerifyAccount = () =>
 export const useResnedOtp = () => useAuthStore((state) => state.resendOtp);
 export const useResetPassword = () =>
   useAuthStore((state) => state.resetPasswprd);
+
+export const useLoadUser = () => useAuthStore((state) => state.loadUser);

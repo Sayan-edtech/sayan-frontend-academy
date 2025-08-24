@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,11 +12,15 @@ import { User, LogOut, HelpCircle, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Routes } from "@/constants/enums";
 import { useAuth } from "@/features/auth/hooks/useAuthStore";
+<<<<<<< HEAD:src/components/shared/UserMenu.tsx
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCurrentUserProfile } from "@/hooks/useUserQueries";
+=======
+import RemoteImage from "../RemoteImage";
+>>>>>>> typescript-front/production:src/components/shared/dashboard/UserMenu.tsx
 
 export function UserMenu({ align }: { align?: "start" | "end" | "center" }) {
-  const { data: user, isLoading } = useCurrentUserProfile();
+  const { user } = useAuth();
   const { logout } = useAuth();
 
   const handleSignOut = async () => {
@@ -26,11 +30,8 @@ export function UserMenu({ align }: { align?: "start" | "end" | "center" }) {
       console.error("Error signing out:", error);
     }
   };
-  if (isLoading) {
-    return <Skeleton className="h-10 w-10 rounded-full" />;
-  }
+
   return (
-    !isLoading &&
     user && (
       <div className="flex items-center gap-4">
         <DropdownMenu dir="rtl">
@@ -38,7 +39,12 @@ export function UserMenu({ align }: { align?: "start" | "end" | "center" }) {
             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
               <Avatar className="h-10 w-10">
                 {user?.avatar ? (
-                  <AvatarImage src={user.avatar} alt={user.fname} />
+                  <RemoteImage
+                    prefix="static"
+                    src={user.avatar}
+                    alt={user.fname}
+                    className="!h-10 !w-10 object-cover"
+                  />
                 ) : (
                   <AvatarFallback className="bg-primary text-white">
                     {user.fname?.charAt(0)}

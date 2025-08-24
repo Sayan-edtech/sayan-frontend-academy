@@ -1,5 +1,4 @@
 import { api } from "@/lib/axios";
-import { authCookies } from "@/lib/cookies";
 import type { User } from "@/types/user";
 
 export interface UserProfile {
@@ -28,21 +27,14 @@ export const userService = {
   // Get current user profile from /me endpoint
   async getCurrentUserProfile(): Promise<User> {
     // Get tokens for academy
-    const tokens = authCookies.getTokens();
 
-    const response = await api.get<UserProfile>("/me", {
-      headers: {
-        "X-Academy-Access-Token": tokens.accessToken || "",
-        "X-Academy-Refresh-Token": tokens.refreshToken || "",
-      },
-    });
+    const response = await api.get<UserProfile>("/me");
     return response.data.data;
   },
 
   // Update user profile
   async updateUserProfile(data: UpdateUserProfileRequest): Promise<User> {
     // Get tokens for academy
-    const tokens = authCookies.getTokens();
 
     // Create FormData for file uploads if needed
     const formData = new FormData();
@@ -61,8 +53,6 @@ export const userService = {
     const response = await api.put<UserProfile>("/me", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        "X-Academy-Access-Token": tokens.accessToken || "",
-        "X-Academy-Refresh-Token": tokens.refreshToken || "",
       },
     });
     return response.data.data;
@@ -71,28 +61,18 @@ export const userService = {
   // Legacy methods for backward compatibility
   // Get user profile by ID
   async getUserProfile(userId: string): Promise<User> {
-    const tokens = authCookies.getTokens();
-
-    const response = await api.get<UserProfile>(`/user/profile/${userId}`, {
-      headers: {
-        "X-Academy-Access-Token": tokens.accessToken || "",
-        "X-Academy-Refresh-Token": tokens.refreshToken || "",
-      },
-    });
+    const response = await api.get<UserProfile>(`/user/profile/${userId}`);
     return response.data.data;
   },
 
   // Update profile picture only
   async updateProfilePicture(data: UpdateProfilePictureRequest): Promise<User> {
-    const tokens = authCookies.getTokens();
     const formData = new FormData();
     formData.append("avatar", data.profile_picture);
 
     const response = await api.put<UserProfile>("/me", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        "X-Academy-Access-Token": tokens.accessToken || "",
-        "X-Academy-Refresh-Token": tokens.refreshToken || "",
       },
     });
     return response.data.data;
@@ -100,14 +80,7 @@ export const userService = {
 
   // Delete profile picture
   async deleteProfilePicture(): Promise<User> {
-    const tokens = authCookies.getTokens();
-
-    const response = await api.delete<UserProfile>("/user/profile/picture", {
-      headers: {
-        "X-Academy-Access-Token": tokens.accessToken || "",
-        "X-Academy-Refresh-Token": tokens.refreshToken || "",
-      },
-    });
+    const response = await api.delete<UserProfile>("/user/profile/picture");
     return response.data.data;
   },
 };

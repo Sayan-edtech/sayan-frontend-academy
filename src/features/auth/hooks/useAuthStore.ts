@@ -5,13 +5,12 @@ import {
   useLogin,
   useSignup,
   useLogout,
-  useRefreshUser,
-  useRefreshTokens,
   useClearAuth,
   useForgotPassword,
   useVerifyAccount,
   useResnedOtp,
   useResetPassword,
+  useLoadUser,
 } from "@/features/auth/store";
 
 // Main authentication hook that combines all the functionality
@@ -22,13 +21,12 @@ export function useAuth() {
   const login = useLogin();
   const signup = useSignup();
   const logout = useLogout();
-  const refreshUser = useRefreshUser();
-  const refreshTokens = useRefreshTokens();
   const clearAuth = useClearAuth();
   const forgotPassword = useForgotPassword();
   const verifyAccount = useVerifyAccount();
   const resendOtp = useResnedOtp();
   const resetPassword = useResetPassword();
+  const loadUser = useLoadUser();
   return {
     user,
     isAuthenticated,
@@ -36,12 +34,11 @@ export function useAuth() {
     login,
     signup,
     logout,
-    refreshUser,
-    refreshTokens,
     clearAuth,
     forgotPassword,
     verifyAccount,
     resendOtp,
     resetPassword,
+    loadUser,
   };
 }

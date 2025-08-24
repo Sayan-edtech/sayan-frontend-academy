@@ -6,6 +6,19 @@ import type {
 } from "axios";
 import { authCookies } from "@/lib/cookies";
 
+export interface ApiError {
+  message: string;
+  response?: {
+    status: number;
+    data?: {
+      message?: string;
+      data: unknown;
+    };
+  };
+  config?: {
+    url: string;
+  };
+}
 // Create axios instance
 export const api = axios.create({
   baseURL:
@@ -13,7 +26,11 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+<<<<<<< HEAD
   withCredentials: true, // Enable cookies for cross-origin requests
+=======
+  withCredentials: true, // Include credentials for CORS requests
+>>>>>>> typescript-front/production
 });
 
 // Request interceptor to add auth token

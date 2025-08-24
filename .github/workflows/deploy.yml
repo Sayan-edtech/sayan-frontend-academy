@@ -69,10 +69,17 @@ jobs:
           ssh_private_key: |
             -----BEGIN OPENSSH PRIVATE KEY-----
             b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+<<<<<<< HEAD
             QyNTUxOQAAACBydRCu55NiEY9WyP1d/UtOYvTRCTCuAM8DrCm+9TNN7QAAAKCABXNGgAVz
             RgAAAAtzc2gtZWQyNTUxOQAAACBydRCu55NiEY9WyP1d/UtOYvTRCTCuAM8DrCm+9TNN7Q
             AAAECUp6fxtNcSA++OpjMNcN2kt1yT4MI4qauIlNFbLjEZjnJ1EK7nk2IRj1bI/V39S05i
             9NEJMK4AzwOsKb71M03tAAAAHWdpdGh1Yi1hY3Rpb25zQHNheWFuLWZyb250ZW5k
+=======
+            QyNTUxOQAAACATft7ZGgeVNG39hHRD5UHE3U+7M0Pj1UupJ5IxKGYdQAAAAKAOgnVeDoJ1
+            XgAAAAtzc2gtZWQyNTUxOQAAACATft7ZGgeVNG39hHRD5UHE3U+7M0Pj1UupJ5IxKGYdQA
+            AAAECz7eo9gUqDBD0jIkPcRG9J/Fcd3Y9DNOntkmUmFZ7lvBN+3tkaB5U0bf2EdEPlQcTd
+            T7szQ+PVS6knkjEoZh1AAAAAHWdpdGh1Yi1hY3Rpb25zQHNheWFuLWZyb250ZW5k
+>>>>>>> typescript-front/production
             -----END OPENSSH PRIVATE KEY-----
           local_path: "./dist/*"
           remote_path: ${{ secrets.REMOTE_PATH }}

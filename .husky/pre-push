@@ -1,5 +1,7 @@
 echo "🚀 Running pre-push checks..."
 echo "📦 Building project..."
 yarn build
+echo "🔍 Running linter..."
+yarn lint
 
 echo "✅ Pre-push checks passed! Ready to deploy."

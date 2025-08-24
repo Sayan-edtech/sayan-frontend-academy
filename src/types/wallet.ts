@@ -12,34 +12,29 @@ export interface Transaction {
   amount?: number;
 }
 
-export type TransactionType = 
+export type TransactionType =
   | "بيع دورة"
   | "عمولة شراكة"
   | "سحب أرباح"
   | "رسوم إدارية"
   | "إضافة رصيد";
 
-export type TransactionColor = 
-  | "blue"
-  | "purple"
-  | "red"
-  | "orange"
-  | "green";
+export type TransactionColor = "blue" | "purple" | "red" | "orange" | "green";
 
-export type TransactionStatus = "مكتمل" | "معلق" | "ملغي";
+export type TransactionStatus =
+  | "completed"
+  | "pending"
+  | "cancelled"
+  | "rejected";
 
-export type TransactionFilter = 
+export type TransactionFilter =
   | "all"
   | "income"
   | "expense"
   | "course"
   | "partnership";
 
-export type DateRange = 
-  | "today"
-  | "this-week"
-  | "this-month"
-  | "this-year";
+export type DateRange = "today" | "this-week" | "this-month" | "this-year";
 
 export type ChartPeriod = "weekly" | "monthly" | "yearly";
 
